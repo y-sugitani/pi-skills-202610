@@ -1,0 +1,28 @@
+{
+  "name": "pi-skills-202610",
+  "version": "0.1.0",
+  "description": "Pi package: delegation extensions, agents, and skills",
+  "license": "MIT",
+  "author": "y-sugitani",
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions"
+    ],
+    "skills": [
+      "./skills"
+    ],
+    "subagents": {
+      "agents": [
+        "./agents"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "typebox": "*"
+  }
+}

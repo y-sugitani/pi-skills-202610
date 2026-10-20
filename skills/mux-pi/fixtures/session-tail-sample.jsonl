@@ -1,0 +1,8 @@
+{"type":"session","version":3,"id":"test-0001","timestamp":"2026-08-14T00:00:00.000Z","cwd":"/tmp"}
+{"type":"session_info","id":"s1","parentId":null,"timestamp":"2026-08-14T00:00:00.000Z","name":"fixture"}
+{"type":"message","id":"m1","parentId":"s1","timestamp":"2026-08-14T00:00:01.000Z","message":{"role":"user","content":[{"type":"text","text":"first user message"}]}}
+{"type":"message","id":"m2","parentId":"m1","timestamp":"2026-08-14T00:00:02.000Z","message":{"role":"assistant","content":[{"type":"thinking","thinking":"first thinking"},{"type":"text","text":"first assistant text"},{"type":"toolCall","id":"c1","name":"timer_start","arguments":{}}]}}
+{"type":"message","id":"m3","parentId":"m2","timestamp":"2026-08-14T00:00:03.000Z","message":{"role":"toolResult","content":[{"type":"toolResult","toolCallId":"c1","result":"ok"}]}}
+{"type":"message","id":"m4","parentId":"m3","timestamp":"2026-08-14T00:00:04.000Z","message":{"role":"assistant","content":[{"type":"text","text":"second assistant text"}]}}
+{"type":"message","id":"m5","parentId":"m4","timestamp":"2026-08-14T00:00:05.000Z","message":{"role":"toolResult","content":[{"type":"toolResult","toolCallId":"c2","result":"ok"}]}}
+{"type":"message","id":"m6","parentId":"m5","timestamp":"2026-08-14T00:00:06.000Z","message":{"role":"assistant","content":[{"type":"text","text":"third assistant text"}]}}
