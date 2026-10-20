@@ -92,6 +92,7 @@ Pi Coding Agent前提です。レーン制御はHerdrの中で動かす前提で
 |---|---|---|---|
 |pi-subagents|必須|`pi install npm:pi-subagents`|Herdr 外の委譲（`subagent`）と `agents/*.md` の解決|
 |ripgrep / fd|必須|`brew install ripgrep fd`|`bash-search-guard` が bash の `find` / `grep` を止めるため、シェル検索はこれらを使う|
+|`@ff-labs/pi-fff`|任意|`pi install npm:@ff-labs/pi-fff`|`fffind` / `ffgrep`。`wiki` の検索手順、`agents/explore` / `agents/executor` のツール優先、`bash-search-guard` の代替案内が前提にしている|
 |Herdr|任意|[Herdr](https://github.com/ogulcancelik/herdr) を導入し `herdr integration install pi`|レーンの pane / tab 制御。連携ファイル `~/.pi/agent/extensions/herdr-agent-state.ts` が入る|
 |pi-herdr|任意|`pi install npm:@ogulcancelik/pi-herdr`|Herdr を pi のツールから操作する|
 |yomiyasu|任意|`npx skills add nanaism/yomiyasu`|`wiki` で書き出す文章をすっきりさせたいときに利用|
@@ -102,6 +103,9 @@ Pi Coding Agent前提です。レーン制御はHerdrの中で動かす前提で
 # 前準備（必須）
 pi install npm:pi-subagents
 brew install ripgrep fd
+
+# 前準備（任意）: fffind / ffgrep を使うなら
+pi install npm:@ff-labs/pi-fff
 
 # 前準備（任意）: wiki で書き出す文章をすっきりさせたいなら
 npx skills add nanaism/yomiyasu
