@@ -1,34 +1,62 @@
 # pi-skills-202610
 
-[pi](https://github.com/earendil-works/pi)（AI コーディングエージェント）の筆者の設定一式を配布するパッケージ。
-「賢い親モデルが判断と監督に回り、安いサブエージェント（explore / executor）に調査と実装を任せる」運用を、
-拡張（ツール）・スキル（方針）・エージェント定義の 3 層で支える。
+[pi](https://github.com/earendil-works/pi)の筆者の設定一式を配布するパッケージしたもの。
 
-Zenn 記事: <!-- TODO: 記事 URL を入れる -->
+以下の点を実現できるように目指しています
 
-```
-方針スキル（読ませる文書）
-  delegate-execute  委譲方針・タイマー・閉じる判定
-  lane-control      progress 駆動の worktree 並列レーン
-  mux-pi            Herdr の検出と起動スクリプト
-  wiki / review / obsidian-syntax
-        ↓ 方針に従わせる
-拡張ツール（機械的に強制する）
-  hijoui-guard      「非委譲宣言」が無い作業ツールを block
-  bash-search-guard bash の GNU find / grep を block
-  cheap-model       安いサブのモデル選択（/cheap-model）
-  spawn-cheap       Herdr 内の pane 起動
-  lane-supervisor   レーンの状態監視（完了・異常だけ親へ）
-  mux-intervene-close / start-lane / session-timer ほか
-        ↓ 実際の実行先
-Herdr あり: tab / pane + lane_watch（spawn_cheap）
-Herdr 無し: pi-subagents の subagent（async: true）
-```
+- 「賢い親モデルが監督、安いサブエージェントが調査と実装」とする運用を行うとき、親モデルのtoken消費を抑えつつしっかり監督できること
+- Obsidianで読む前提のmarkdown格納ディレクトリ(本稿ではwikiと呼称)に作業状況の記録が残ること
+- wikiに書いたタスクリストを元に並列処理ができること
 
-- 要点は、拡張が方針を機械的に守らせることにある。文章で「委譲しろ」と書くだけでは守られないので、ガードで止める。
-- Herdr の有無で**起動手段だけ**が変わる。方針（delegate-execute）は同じ。
 
-## 前提
+具体的には以下の制御を行います
+
+**委譲の強制(安委譲)** 知性高めのモデル(筆者はGrok4.5〜4.7を常用)に仕事を任せるが、殆どの作業を安いモデル(DeepSeek V4.1 Flashを想定)にやらせレビューや監督に徹させたいので、extensionsを使って「ちょっとだけの改変です」「ユーザー許可があったから」などの理由を付けないと作業がブロックされるようにする
+
+**レーン制御** markdownに書いたタスクリストに従って、複数作業を並列で進めさせたい。よってレーン制御担当(賢いモデル指定)が、レーン監督(賢いモデル指定)を立ち上げて作業を分配。レーン監督はさらに安委譲して作業を進め、wikiに記録を残す。
+
+**その他調整** 時間とtoken節約のため、単純grepやfindを封じてrgなど効率の良いものを使わせるよう強いたり、各種制御を円滑にするためのherdrやタイマー制御を入れたり
+
+
+※ 筆者が利用している物を汎用化するために改変したものなので、意図通り動作するかは保証しかねます。
+
+
+
+## 内容物
+
+
+| スキル | 内容 |
+|---|---|
+| `lane-control` | wikiに書いた進捗確認ドキュメントに従って並列で作業レーンを立てるスキル(レーン運用) |
+| `mux-pi` | Herdr の検出と起動スクリプト |
+| `wiki` / `review` / `obsidian-syntax` | wiki の読み書き、レビュー手順、Obsidian 記法 |
+
+
+| 拡張 | 内容 |
+|---|---|
+| `hijoui-guard` | 親モデルの手続きに従ってない操作をブロックしたりして、安モデルにタスクを投げるよう強いる |
+| `bash-search-guard` | bash の GNU `find` / `grep` を block |
+| `cheap-model` | 安モデル選択支援（`/cheap-model`） |
+| `spawn-cheap` | Herdr 内の pane 起動 |
+| `lane-supervisor` | レーンの状態監視（完了・異常だけ親へ伝達） |
+| `mux-intervene-close` | 子への割り込み（`mux_intervene`）と pane / tab を閉じる（`mux_close`） |
+| `start-lane` | `/start-lane` でレーン運用を開始 |
+| `session-timer` | `timer_start` / `timer_stop` / `timer_status`タイマー割り込み制御。定期チェックを促したり、時間切れで打ち切ったり |
+| `enable-search-tools` | grep / find / ls を常に有効化 |
+
+## 始め方
+
+Pi Coding Agent前提です。レーン制御はHerdrの中で動かす前提です。それ以外はsubagentを利用。 以下の拡張やツールをいれてください
+
+// ここに表かリストインストールすべきコマンドや拡張を列挙
+
+
+// ここに導入方法
+
+
+
+
+---ここまで調整中--
 
 | 項目 | 内容 |
 |---|---|
@@ -75,7 +103,7 @@ pi install npm:pi-subagents
 | `/start-lane` | コマンド | 使う | 警告のみ |
 | `subagent` / `subagent_wait` / `bg_wait` / `contact_supervisor`（pi-subagents） | ツール | **拒否**（in-process 禁止。`subagent` / `subagent_wait` のみ） | 使う（`async: true` + `bg_wait` で待つ） |
 | `timer_start` / `timer_stop` / `timer_status` | ツール | 使う | 使う |
-| `hijoui-guard` / `bash-search-guard` / `enable-search-tools` / `session-title` / `/exit` | 拡張 | 有効 | 有効 |
+| `hijoui-guard` / `bash-search-guard` / `enable-search-tools` | 拡張 | 有効 | 有効 |
 
 ### Herdr 無しで安いモデルを使う
 
@@ -113,8 +141,6 @@ Herdr ありの pane 起動は `/cheap-model` の `cheap-model.json` を読む�
 | `cheap-model` | `/cheap-model` で安いサブの provider / model / thinking を選び `cheap-model.json` に保存。親モデルは変えない | なし | 共通 |
 | `enable-search-tools` | 起動時に `grep` / `find` / `ls` を active tools へ追加（既定は read / bash / edit / write のみ） | なし | 共通 |
 | `session-timer` | `timer_start` / `timer_stop` / `timer_status`。時間になったら同じセッションへメッセージを差し込む（壁時計の sleep 監視はしない） | なし | 共通 |
-| `session-title` | 最初のプロンプトから安いモデルで日本語 1 行のセッション名を作る（最大 2 試行） | `cheap-model.json` | 共通 |
-| `plain-exit` | `exit` / `quit` / `bye` と `/exit` で終了 | なし | 共通 |
 | `spawn-cheap` | `spawn_cheap` ツール。`mux-pi` の `spawn-agent.sh --layout pane` を包む。Herdr 内では `subagent` を拒否 | Herdr、`skills/mux-pi/scripts` | Herdr 専用 |
 | `lane-supervisor` | `lane_watch` / `lane_unwatch` / `lane_watch_status` / `peer_supervisor`。状態判定は拡張内（安いモデル）で行い、親は完了・異常のときだけ起きる | Herdr、`cheap-model.json` | Herdr 専用 |
 | `mux-intervene-close` | `mux_intervene`（force + ack 付き割り込み）と `mux_close`（tab / pane） | Herdr、`skills/mux-pi/scripts` | Herdr 専用 |
@@ -192,7 +218,7 @@ PI_HIJOUIGUARD=off pi
 }
 ```
 
-このファイルは `spawn_cheap`（`--model provider/model:thinking`）、`session-title`、`lane-supervisor` の拡張内点検が読む。
+このファイルは `spawn_cheap`（`--model provider/model:thinking`）と `lane-supervisor` の拡張内点検が読む。
 無い・壊れているときは pi の既定モデルに落ちる。
 
 ## wiki の `## Wiki` 宣言
@@ -321,7 +347,6 @@ agents/               # explore / executor の定義
 - `spawn_cheap` は pane 経路のみ。Herdr 内で `subagent`（in-process）は拡張が拒否する。
 - `lane-supervisor` の拡張内判定は `cheap-model.json` のモデルに依存する。未設定だと pi の既定モデルで走る（コストが上がる）。
 - `bash-search-guard` が見るのは**コマンド位置**だけ。`rg "find"` のような文字列は通す（ガードの説明を検索語にできる）。
-- `session-title` は最初のインタラクティブ入力時に最大 2 回だけ試す（失敗しても本体は壊さない）。
 - 拡張 API は pi 側で変わりうる。1.3 系で確認している。
 - 同梱の `agents/*.md` は `model:` を持たない。何も設定しないと親セッションのモデルで子が走る（高い）。
 
