@@ -1,6 +1,6 @@
 ---
 name: wiki
-description: Obsidian vault（Markdown 直接）の読み書きと、progress=工事の看板（Outcome・能力フェーズ）、journals=区切りの計画〜結晶、keywords=安定用語の規則。vault は読む側の AGENTS.md `## Wiki` 節で宣言する前提。Scratch は人領域（無指示では触らない）。Use when wiki / progress / journal / keyword / Obsidian / read_note.
+description: Obsidian vault（Markdown 直接）の読み書きと、progress=工事の看板（Outcome・能力フェーズ）、journals=区切りの計画〜結晶、keywords=安定用語の規則。vault は読む側の AGENTS.md `## Wiki` 節で宣言する前提。Use when wiki / progress / journal / keyword / Obsidian / read_note.
 user_invocable: true
 ---
 
@@ -21,7 +21,6 @@ vault の名前・パスはこの skill に書かない。読む側のリポジ�
 
 - vault: <vault 名>
 - path: <vault の絶対パス>
-- mcp: <MCP サーバ名（任意。無ければ Markdown を直接読む）>
 ```
 
 以下 `<vault>` はノートのルート（宣言の `path`）。ノート指定は vault ルート相対。
@@ -32,13 +31,13 @@ vault の名前・パスはこの skill に書かない。読む側のリポジ�
 | 新規 / 上書き | `write` |
 | 部分置換（チェック・いま・結晶） | `edit` |
 | 一覧 | `ls`（ノート一覧は `bash` `ls`） |
-| 検索 | `ffgrep`（glob 指定。Scratch は指示時のみ）。シェル検索が必要なときだけ `bash` `rg`（`--glob '!Scratch/**'`） |
+| 検索 | `ffgrep`（glob 指定）。シェル検索が必要なときだけ `bash` `rg` |
 | 移動（`progress/` → `done/`） | `bash` `mv` |
 | 削除 | 確認してから。confirm なしで消さない |
 
-`mcp` が同じ `<vault>` で繋がっていれば使ってよい（ツール名は `<vault>` の `-` → `_` 接頭辞。例: `my-vault` → `my_vault_read_note`）。無くても止めない。
+読み書きは Markdown を直接触る（`read` / `write` / `edit`）。MCP は使わない。
 
-**検索順（タスク前）**: `ls` `global/progress` と `<module>/progress` → keywords 一覧 → `ffgrep`（必要なら path を絞る。Scratch は指示時のみ）→ `read`。
+**検索順（タスク前）**: `ls` `global/progress` と `<module>/progress` → keywords 一覧 → `ffgrep`（必要なら path を絞る）→ `read`。
 
 ## 文書の書き出し・推敲
 
@@ -51,7 +50,6 @@ vault の名前・パスはこの skill に書かない。読む側のリポジ�
 
 ```
 <vault>/
-├── Scratch/          # 人の下書き領域（下記）
 ├── global/           # 仕様・ドメイン・横断
 │   ├── journals/
 │   ├── progress/ + done/
@@ -65,18 +63,11 @@ vault の名前・パスはこの skill に書かない。読む側のリポジ�
 | **progress** | 工事の**看板**（いま・フェーズ）。詳細なし | 短命 → `done/` |
 | **journals** | 区切りの**計画 → 記録 → 結晶**。詳細の正本 | 永続 |
 | **keywords** | 安定した用語・最終仕様 | 永続 |
-| **Scratch** | 人のラフ・試行 | 捨ててよい |
 
 - 区分は時間軸ではなく**内容の性質**
 - **global** = 何か（仕様・ドメイン）/ サーバ×クライアント協働  
   **module** = そのモジュールでの実装。迷ったら module
 - Chat/Copilot は正本にしない
-
-### Scratch（人領域）
-
-- **指示がなければ読まない・書かない・動かさない**
-- 人が置いたメモの参照を求められたとき、または明示指示があるときだけ触る
-- 昇格は人または明示指示時。正本は journals/progress/keywords。Scratch に正本リンクを残すのは可
 
 ## 参照記法
 
@@ -340,7 +331,6 @@ progress のいま → journal の計画 → 発見は記録に短く → 区切
 | Outcome なしの「〜対応」工事 | 一言に価値を書く or 分割し直す |
 | journal の `C3 あとで` / 単語チェック | 何を・どこを・完了条件 |
 | 子 progress に umbrella 長文コピー | umbrella が一覧、子は薄い |
-| 無指示で Scratch を編集・昇格 | 触らない |
 | `done/` を通常の編集対象にする | 読み取り専用アーカイブ |
 | 結晶が読みにくい長文 / 形式の固定（箇条書きだけ 等） | その点がいちばん早く分かる形（箇条書き・短い文・表・mermaid） |
 | 変更ファイルにフルパス連打 / tree | 基準 1 行 + レイヤー起点の表 |
