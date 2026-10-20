@@ -41,10 +41,10 @@ vault の名前・パスはこの skill に書かない。読む側のリポジ�
 
 ## 文書の書き出し・推敲
 
-- 業務・技術文書（PRD、設計書、ADR、仕様書、手順書、調査・計画・報告書）を書き出す・推敲するときは **yomiyasu** を読み、それに従う
-- progress / journal / keyword の**枠・語彙・フェーズ行**は **wiki** が正本。その枠の中の本文を書き出すときも yomiyasu に従う
+- 業務・技術文書（PRD、設計書、ADR、仕様書、手順書、調査・計画・報告書）を書き出す・推敲するときは、**yomiyasu** が使えるなら読んで従う
+- progress / journal / keyword の**枠・語彙・フェーズ行**は **wiki** が正本。その枠の中の本文を書き出すときも、yomiyasu が使えるなら従う
 - 通常の質問への回答には yomiyasu を適用しない
-- available skills に `yomiyasu` が無いときは、その文書の書き出しだけ進めず、無いことを伝える。看板（progress）の更新そのものは止めない
+- available skills に `yomiyasu` が無いときも、推敲なしでそのまま書き出す（無いことの告知は要らない）
 
 ## 構造と境界
 

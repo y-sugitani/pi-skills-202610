@@ -94,6 +94,7 @@ Pi Coding Agent前提です。レーン制御はHerdrの中で動かす前提で
 |ripgrep / fd|必須|`brew install ripgrep fd`|`bash-search-guard` が bash の `find` / `grep` を止めるため、シェル検索はこれらを使う|
 |Herdr|任意|[Herdr](https://github.com/ogulcancelik/herdr) を導入し `herdr integration install pi`|レーンの pane / tab 制御。連携ファイル `~/.pi/agent/extensions/herdr-agent-state.ts` が入る|
 |pi-herdr|任意|`pi install npm:@ogulcancelik/pi-herdr`|Herdr を pi のツールから操作する|
+|yomiyasu|任意|`npx skills add nanaism/yomiyasu`|`wiki` で書き出す文章をすっきりさせたいときに利用|
 
 導入手順は次のとおりです。コマンドは使うものだけ選んで実行してください。
 
@@ -101,6 +102,9 @@ Pi Coding Agent前提です。レーン制御はHerdrの中で動かす前提で
 # 前準備（必須）
 pi install npm:pi-subagents
 brew install ripgrep fd
+
+# 前準備（任意）: wiki で書き出す文章をすっきりさせたいなら
+npx skills add nanaism/yomiyasu
 
 # 前準備（任意）: レーン制御を使うときだけ
 # Herdr を導入してから
